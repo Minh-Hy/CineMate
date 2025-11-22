@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
-    tools:context=".ui.RegisterFragment">
+    tools:context=".ui.RegisterFragment"
+    android:background="@drawable/bg_screen_blue_500_to_purple_600">
 
     <TextView
         android:id="@+id/text_register_title"
@@ -16,14 +17,16 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/text_input_layout_username"/>
+        app:layout_constraintBottom_toTopOf="@id/text_input_layout_username"
+        android:textColor="@color/white"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_layout_username"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Tên hiển thị"
+        app:boxBackgroundColor="@color/netflix_gray_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Email"
+        app:boxBackgroundColor="@color/netflix_gray_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_input_layout_username">
@@ -64,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Mật khẩu"
+        app:boxBackgroundColor="@color/netflix_gray_dark"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +78,8 @@
             android:id="@+id/edit_text_password_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textColor="@color/white"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,6 +91,8 @@
         android:padding="12dp"
         android:text="Đăng Ký"
         android:textSize="16sp"
+        android:background="@drawable/bg_screen_blue_400_to_purple_400"
+        app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_input_layout_password_register" />
@@ -95,7 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Đã có tài khoản? Đăng nhập"
-        android:textColor="?attr/colorPrimary"
+        android:textColor="@color/white"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

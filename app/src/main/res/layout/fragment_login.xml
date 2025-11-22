@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/netflix_black"
+    android:background="@drawable/bg_screen_blue_500_to_purple_600"
     android:paddingStart="32dp"
     android:paddingEnd="32dp"
     tools:context=".ui.LoginFragment">
@@ -20,13 +20,14 @@
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:tint="@color/white">
 
-        <ImageView
+        <TextView
             android:id="@+id/logo_cinemate"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:src="@drawable/cinemate"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"/>
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="CineMate"
+            android:textStyle="bold"
+            android:textColor="@color/white" />
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -100,7 +101,8 @@
         android:text="Đăng Nhập"
         android:textAllCaps="false"
         android:textSize="16sp"
-        app:backgroundTint="@color/netflix_red"
+        android:background="@drawable/bg_screen_blue_400_to_purple_400"
+        app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_input_layout_password" />
@@ -114,7 +116,7 @@
         android:background="?attr/selectableItemBackground"
         android:padding="8dp"
         android:text="Quên mật khẩu?"
-        android:textColor="@color/netflix_gray_light"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_login" />
@@ -137,7 +139,7 @@
         android:layout_marginTop="32dp"
         android:padding="8dp"
         android:text="Mới tham gia? Đăng ký ngay."
-        android:textColor="@color/netflix_gray_light"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_google_sign_in" />

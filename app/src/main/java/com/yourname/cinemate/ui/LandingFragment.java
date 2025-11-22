@@ -1,5 +1,8 @@
 package com.yourname.cinemate.ui;
 
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -8,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +31,7 @@ public class LandingFragment extends Fragment implements MoviePosterAdapter.OnMo
     private MoviePosterAdapter posterAdapter;
     private Button goToLoginButton;
     private ImageButton moreOptions;
+    private TextView logoCinemate;
 
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,6 +47,12 @@ public class LandingFragment extends Fragment implements MoviePosterAdapter.OnMo
         backgroundRecyclerView = view.findViewById(R.id.recycler_background_posters);
         goToLoginButton = view.findViewById(R.id.button_go_to_login);
         moreOptions = view.findViewById(R.id.btn_more);
+        logoCinemate = view.findViewById(R.id.logo_cinemate);
+        // Set gradient cho text "CineMate"
+        setGradientText(logoCinemate,
+                Color.parseColor("#60A5FA"), // blue-400
+                Color.parseColor("#C4B5FD")  // purple-400
+        );
 
 
         setupRecyclerView();
@@ -87,5 +98,26 @@ public class LandingFragment extends Fragment implements MoviePosterAdapter.OnMo
     // Implement interface, nhưng không cần làm gì vì chỉ là ảnh nền
     @Override
     public void onMovieClick(Movie movie) { }
-    
+    private void setGradientText(final TextView tv, final int startColor, final int endColor) {
+        if (tv == null) return;
+
+        tv.post(new Runnable() {
+            @Override
+            public void run() {
+                String text = tv.getText().toString();
+                float width = tv.getPaint().measureText(text);
+
+                Shader textShader = new LinearGradient(
+                        0f, 0f,          // bắt đầu bên trái
+                        width, 0f,       // kết thúc bên phải (linear-to-r)
+                        new int[]{ startColor, endColor },
+                        null,
+                        Shader.TileMode.CLAMP
+                );
+
+                tv.getPaint().setShader(textShader);
+                tv.invalidate();
+            }
+        });
+    }
 }

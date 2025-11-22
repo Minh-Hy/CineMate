@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@drawable/bg_screen_blue_500_to_purple_600"
     tools:context=".ui.SupportFragment">
 
     <LinearLayout
@@ -20,10 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp">
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="60dp"
-                android:src="@drawable/cinemate"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CineMate"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/white"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
 
@@ -34,7 +37,7 @@
             android:text="Tìm trợ giúp trực tuyến"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:layout_marginBottom="24dp"
             android:layout_gravity="center"/>
 
@@ -48,7 +51,7 @@
             android:text="Chúng tôi ở đây để giúp bạn."
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:layout_marginBottom="8dp"/>
 
         <TextView
@@ -57,7 +60,7 @@
             android:text="Bạn không thể đăng ký tài khoản Netflix trong ứng dụng. Chúng tôi biết điều này hơi phiền phức. Hãy đăng ký tham gia và quay lại để bắt đầu xem các series và phim nhé."
             android:textSize="16sp"
             android:lineSpacingExtra="4dp"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:layout_marginBottom="16dp"/>
 
         <TextView
@@ -65,7 +68,7 @@
             android:layout_height="wrap_content"
             android:text="Bạn đã có tài khoản?"
             android:textSize="16sp"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:layout_marginBottom="8dp"/>
 
         <!-- Nút Khôi phục mật khẩu ĐÃ CẬP NHẬT -->
@@ -83,7 +86,8 @@
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:layout_marginBottom="24dp"
-            app:backgroundTint="@color/button_background_color"
+            android:background="@drawable/bg_screen_blue_400_to_purple_400"
+            app:backgroundTint="@null"
             app:cornerRadius="4dp"
             app:icon="@drawable/ic_lock"
             app:iconGravity="textStart"
@@ -98,7 +102,7 @@
             android:text="Liên hệ với Dịch vụ khách hàng của Netflix"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:layout_marginBottom="8dp"/>
 
         <TextView
@@ -106,7 +110,7 @@
             android:layout_height="wrap_content"
             android:text="Chúng tôi sẽ kết nối cuộc gọi miễn phí bằng kết nối Internet của bạn."
             android:textSize="16sp"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:layout_marginBottom="16dp"/>
 
         <!-- Các nút Gọi và Trò chuyện ĐÃ CẬP NHẬT -->
@@ -130,7 +134,8 @@
                 android:textStyle="bold"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-                app:backgroundTint="@color/button_background_color"
+                android:background="@drawable/bg_screen_blue_400_to_purple_400"
+                app:backgroundTint="@null"
                 app:cornerRadius="4dp"
                 app:icon="@drawable/ic_call"
                 app:iconGravity="textStart"
@@ -152,7 +157,8 @@
                 android:textStyle="bold"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-                app:backgroundTint="@color/button_background_color"
+                android:background="@drawable/bg_screen_blue_400_to_purple_400"
+                app:backgroundTint="@null"
                 app:cornerRadius="4dp"
                 app:icon="@drawable/ic_chat"
                 app:iconGravity="textStart"
