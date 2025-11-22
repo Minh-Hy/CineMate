@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- nhấn -->
+    <item android:state_pressed="true" android:color="#4F4F4F"/>
+    <!-- disabled -->
+    <item android:state_enabled="false" android:color="#8E8E8E"/>
+    <!-- mặc định (xám đậm như ảnh) -->
+    <item android:color="#5E5E5E"/>
+</selector>

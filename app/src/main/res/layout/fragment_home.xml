@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/netflix_black"
+    tools:context=".ui.HomeFragment">
+
+    <!-- **** THÊM TOOLBAR VÀO ĐÂY **** -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_home"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/netflix_black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:titleTextColor="@color/netflix_red" />
+    <!-- Bạn có thể set app:title="CineMate" ở đây hoặc trong code Java -->
+
+    <!-- **** SỬA LẠI CONSTRAINT CỦA RECYCLERVIEW **** -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_category_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_home" />
+    <!-- app:layout_constraintTop_toTopOf="parent" đã được đổi thành
+         app:layout_constraintTop_toBottomOf="@id/toolbar_home"
+         để nó nằm dưới Toolbar -->
+
+    <!-- ProgressBar giữ nguyên, nhưng constraint của nó cũng cần được cập nhật
+         để không bị Toolbar che khuất -->
+    <ProgressBar
+        android:id="@+id/progress_bar_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_home"
+        tools:visibility="visible" />
+    <!-- Khu vực hiển thị lỗi -->
+    <LinearLayout
+        android:id="@+id/layout_error_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/text_error_message_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Không thể tải dữ liệu. Vui lòng kiểm tra kết nối mạng."
+            android:textColor="@color/netflix_gray_light"
+            android:gravity="center"/>
+
+        <Button
+            android:id="@+id/button_retry_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Thử lại"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

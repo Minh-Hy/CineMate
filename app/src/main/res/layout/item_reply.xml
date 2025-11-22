@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <!-- Avatar người trả lời, nhỏ hơn avatar chính -->
+    <ImageView
+        android:id="@+id/image_avatar_reply"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        tools:src="@android:drawable/sym_def_app_icon" />
+
+    <!-- Layout chứa nội dung trả lời -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:orientation="vertical">
+
+        <!-- Tên người trả lời và ngày tháng trên cùng một dòng -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/text_username_reply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                tools:text="Tên người trả lời" />
+            <TextView
+                android:id="@+id/text_date_reply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/netflix_gray_light"
+                android:textSize="11sp"
+                tools:text="2 giờ trước"/>
+        </LinearLayout>
+
+        <!-- Nội dung trả lời -->
+        <TextView
+            android:id="@+id/text_content_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            tools:text="Đây là nội dung của câu trả lời." />
+
+    </LinearLayout>
+
+</LinearLayout>

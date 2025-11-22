@@ -1,0 +1,40 @@
+<resources>
+    <style name="Theme.CineMate" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- bạn đã có -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="colorPrimary">@color/netflix_red</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/netflix_red</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="colorSurface">@color/netflix_grey_900</item>
+        <item name="colorOnSurface">@color/netflix_text_primary</item>
+        <item name="android:windowBackground">@color/netflix_black</item>
+        <item name="colorOutline">@color/netflix_outline</item>
+
+        <!-- ✨ Thêm mặc định bo góc lớn + style cho widget -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.CineMate.Large</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.CineMate.Large</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.CineMate.Large</item>
+
+        <item name="textInputStyle">@style/Widget.CineMate.TextInputLayout</item>
+        <item name="materialButtonStyle">@style/Widget.CineMate.Button.Filled</item>
+        <item name="materialCardViewStyle">@style/Widget.CineMate.Card</item>
+
+        <!-- Ripple & control tint phù hợp tông tối -->
+        <item name="colorControlHighlight">@color/netflix_ripple</item>
+
+        <!-- Typography mặc định (M2) -->
+        <item name="textAppearanceHeadline5">@style/TextAppearance.CineMate.Headline</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.CineMate.Body</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.CineMate.Caption</item>
+    </style>
+    <style name="Widget.App.TextInputLayout.FilledBox.NoUnderline" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
+        <!-- Đặt màu của đường gạch chân là trong suốt -->
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+    </style>
+</resources>

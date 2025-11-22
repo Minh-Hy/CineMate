@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CurvedTextView">
+        <attr name="ctvText" format="string"/>
+        <attr name="ctvTextColor" format="color"/>
+        <attr name="ctvTextSize" format="dimension"/>
+        <attr name="ctvRadius" format="dimension"/>
+        <attr name="ctvLetterSpacing" format="float"/>
+    </declare-styleable>
+</resources>

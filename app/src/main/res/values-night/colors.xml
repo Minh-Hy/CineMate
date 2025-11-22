@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    Trong Dark Mode, chúng ta không dùng màu đen tuyền (#000000)
+    mà dùng màu xám rất đậm để giảm độ tương phản, đỡ mỏi mắt.
+    -->
+    <color name="netflix_black">#121212</color>
+    <color name="netflix_gray_dark">#222222</color>
+    <!-- Các màu khác có thể giữ nguyên hoặc điều chỉnh độ sáng nếu cần -->
+    <color name="netflix_red">#E50914</color>
+    <color name="netflix_red_dark">#B00020</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="netflix_gray_light">#B3B3B3</color>
+</resources>
