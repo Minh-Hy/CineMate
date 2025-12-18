@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- Nền tròn tối phía sau avatar -->
+    <solid android:color="@color/netflix_gray_dark" />
+
+    <!-- Viền mỏng cho avatar -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/netflix_gray_light" />
+
+    <!-- Nếu muốn có khoảng đệm so với content bên trong -->
+    <padding
+        android:left="2dp"
+        android:top="2dp"
+        android:right="2dp"
+        android:bottom="2dp" />
+</shape>

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ConversationResponse {
     @SerializedName("id")
-    private String id;
+    private String id; // Đây là conversationId quan trọng
 
     @SerializedName("status")
     private String status;
@@ -13,8 +13,6 @@ public class ConversationResponse {
     @SerializedName("messages")
     private List<ChatMessage> messages;
 
-    // Getters
     public String getId() { return id; }
-    public String getStatus() { return status; }
     public List<ChatMessage> getMessages() { return messages; }
 }

@@ -1,6 +1,7 @@
 package com.yourname.cinemate.data.remote;
 
 // import các model bạn sẽ tạo ở bước sau
+import com.yourname.cinemate.data.model.Attachment;
 import com.yourname.cinemate.data.model.ChangePasswordDto;
 import com.yourname.cinemate.data.model.Comment;
 import com.yourname.cinemate.data.model.ConversationResponse;
@@ -124,6 +125,11 @@ public interface ApiService {
     @POST("auth/reset-password")
     Call<Void> resetPassword(@Body ResetPasswordDto resetDto);
     // Lấy cuộc hội thoại và lịch sử tin nhắn
-    @GET("conversation")
-    Call<ConversationResponse> getConversation();
+    @GET("chat/conversation")
+    Call<ConversationResponse> getUserConversation();
+
+    // Upload file (ảnh)
+    @Multipart
+    @POST("chat/upload")
+    Call<Attachment> uploadChatFile(@Part MultipartBody.Part file);
 }

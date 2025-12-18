@@ -97,19 +97,6 @@ public class ChatFragment extends Fragment {
             }
         });
 
-        // Quan sát tin nhắn Real-time mới nhận được
-        viewModel.getIncomingMessage().observe(getViewLifecycleOwner(), newMessage -> {
-            if (newMessage != null) {
-                // Thêm vào Adapter
-                adapter.addMessage(newMessage);
-                // Cuộn xuống cuối
-                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
-
-                // Cập nhật list trong ViewModel để giữ trạng thái
-                viewModel.addNewMessageToList(newMessage);
-            }
-        });
-
         viewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
             swipeRefreshLayout.setRefreshing(isLoading);
         });

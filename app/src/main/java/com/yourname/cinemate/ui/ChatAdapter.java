@@ -1,5 +1,8 @@
 package com.yourname.cinemate.ui;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,7 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.yourname.cinemate.R;
+import com.yourname.cinemate.data.model.Attachment;
 import com.yourname.cinemate.data.model.ChatMessage;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +29,17 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    // Hàm này giúp thêm tin nhắn mới mượt mà hơn
     public void addMessage(ChatMessage message) {
+        // 1. Kiểm tra xem tin nhắn này đã có trong danh sách chưa (dựa vào ID)
+        if (message.getId() != null) {
+            for (ChatMessage m : messages) {
+                if (m.getId() != null && m.getId().equals(message.getId())) {
+                    return; // Đã tồn tại -> Thoát ngay, không thêm nữa
+                }
+            }
+        }
+
+        // 2. Nếu chưa có thì mới thêm vào
         this.messages.add(message);
         notifyItemInserted(this.messages.size() - 1);
     }
@@ -68,30 +83,142 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return messages.size();
     }
 
+    // ==========================================
     // ViewHolder cho tin nhắn của User (Gửi đi)
+    // ==========================================
     static class SentMessageViewHolder extends RecyclerView.ViewHolder {
         TextView content;
+        ImageView imageAttachment; // Đã sửa tên cho thống nhất
+        TextView fileAttachment;   // Thêm view hiển thị file
+
         public SentMessageViewHolder(@NonNull View itemView) {
             super(itemView);
             content = itemView.findViewById(R.id.text_message_content);
+            imageAttachment = itemView.findViewById(R.id.image_attachment);
+            fileAttachment = itemView.findViewById(R.id.text_file_attachment);
         }
+
         void bind(ChatMessage message) {
-            content.setText(message.getContent());
+            // 1. Xử lý hiển thị Text
+            if (message.getContent() != null && !message.getContent().isEmpty()) {
+                content.setVisibility(View.VISIBLE);
+                content.setText(message.getContent());
+            } else {
+                content.setVisibility(View.GONE);
+            }
+
+            // 2. Xử lý Attachment (Copy logic từ ReceivedMessageViewHolder)
+            imageAttachment.setVisibility(View.GONE);
+            fileAttachment.setVisibility(View.GONE);
+
+            List<Attachment> attachments = message.getAttachments();
+
+            if (attachments != null && !attachments.isEmpty()) {
+                Attachment attachment = attachments.get(0);
+                String type = attachment.getType();
+                String url = attachment.getUrl();
+                String fileName = attachment.getFileName();
+
+                if ("image".equals(type)) {
+                    imageAttachment.setVisibility(View.VISIBLE);
+                    Glide.with(itemView.getContext())
+                            .load(url)
+                            .into(imageAttachment);
+
+                    imageAttachment.setOnClickListener(v -> openUrlInBrowser(itemView.getContext(), url));
+                } else if ("file".equals(type)) {
+                    fileAttachment.setVisibility(View.VISIBLE);
+                    fileAttachment.setText("📎 " + fileName);
+                    fileAttachment.setOnClickListener(v -> openUrlInBrowser(itemView.getContext(), url));
+                }
+            }
+        }
+
+        private void openUrlInBrowser(Context context, String url) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                context.startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
+    // ==========================================
     // ViewHolder cho tin nhắn của Admin (Nhận được)
+    // ==========================================
     static class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
         TextView content;
         ImageView avatar;
+        ImageView imageAttachment;
+        TextView fileAttachment;
+
         public ReceivedMessageViewHolder(@NonNull View itemView) {
             super(itemView);
-            content = itemView.findViewById(R.id.text_message_content);
             avatar = itemView.findViewById(R.id.image_avatar);
+            content = itemView.findViewById(R.id.text_message_content);
+            imageAttachment = itemView.findViewById(R.id.image_attachment);
+            fileAttachment = itemView.findViewById(R.id.text_file_attachment);
         }
+
         void bind(ChatMessage message) {
-            content.setText(message.getContent());
-            // Có thể set tên Admin nếu muốn
+            // 1. Hiển thị nội dung text
+            if (message.getContent() != null && !message.getContent().isEmpty()) {
+                content.setText(message.getContent());
+                content.setVisibility(View.VISIBLE);
+            } else {
+                content.setVisibility(View.GONE);
+            }
+
+            // 2. Hiển thị Avatar (Dùng helper method từ Model nếu có, hoặc check null)
+            String avatarUrl = message.getSenderAvatarUrl(); // Sử dụng hàm tiện ích trong ChatMessage
+            if (avatarUrl != null) {
+                Glide.with(itemView.getContext())
+                        .load(avatarUrl)
+                        .circleCrop()
+                        .placeholder(R.drawable.ic_profile)
+                        .into(avatar);
+            } else {
+                // Avatar mặc định cho Admin
+                avatar.setImageResource(R.drawable.ic_profile);
+            }
+
+            // 3. Xử lý Attachment
+            imageAttachment.setVisibility(View.GONE);
+            fileAttachment.setVisibility(View.GONE);
+
+            List<Attachment> attachments = message.getAttachments();
+
+            if (attachments != null && !attachments.isEmpty()) {
+                Attachment attachment = attachments.get(0);
+                String type = attachment.getType();
+                String url = attachment.getUrl();
+                String fileName = attachment.getFileName();
+
+                if ("image".equals(type)) {
+                    imageAttachment.setVisibility(View.VISIBLE);
+                    Glide.with(itemView.getContext())
+                            .load(url)
+                            .into(imageAttachment);
+
+                    imageAttachment.setOnClickListener(v -> openUrlInBrowser(itemView.getContext(), url));
+                } else if ("file".equals(type)) {
+                    fileAttachment.setVisibility(View.VISIBLE);
+                    fileAttachment.setText("📎 " + fileName);
+                    fileAttachment.setOnClickListener(v -> openUrlInBrowser(itemView.getContext(), url));
+                }
+            }
+        }
+
+        private void openUrlInBrowser(Context context, String url) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                context.startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

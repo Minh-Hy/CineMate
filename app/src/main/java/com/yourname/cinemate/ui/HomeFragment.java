@@ -1,6 +1,7 @@
 package com.yourname.cinemate.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -116,32 +117,39 @@ public class HomeFragment extends Fragment implements MovieBannerAdapter.OnMovie
         }
     }
     @Override
-    public void onMoviePlayClick(Movie movie) {
+    public void onMoviePlayClick(Movie movie){
         if (movie == null) return;
 
-        Log.d("HomeFragment", "Play button clicked for movie: " + movie.getTitle());
         String trailerUrl = movie.getTrailerUrl();
-        String videoId = getYouTubeVideoId(trailerUrl); // Cần hàm tiện ích này
+        String videoId = getYouTubeVideoId(trailerUrl); // Sử dụng cùng hàm tiện ích như trên
+        Log.e("TrailerCheck", "Original URL: " + trailerUrl);
+        Log.e("TrailerCheck", "Extracted ID: " + videoId);
+        Log.e("TrailerCheck", "Final Link: http://www.youtube.com/watch?v=" + videoId);
 
-        if (videoId != null && !videoId.isEmpty()) {
-            Intent intent = new Intent(requireContext(), PlayerActivity.class);
-            intent.putExtra(PlayerActivity.EXTRA_VIDEO_ID, videoId);
-            startActivity(intent);
+        if (videoId != null) {
+            Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoId));
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + videoId));
+            try {
+                startActivity(appIntent);
+            } catch (Exception ex) {
+                startActivity(webIntent);
+            }
+        } else if (trailerUrl != null && !trailerUrl.isEmpty()) {
+            // Fallback: Mở link trực tiếp nếu không tách được ID
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(trailerUrl));
+            startActivity(browserIntent);
         } else {
             Toast.makeText(getContext(), "Phim này hiện chưa có trailer", Toast.LENGTH_SHORT).show();
         }
     }
     private String getYouTubeVideoId(String youtubeUrl) {
-        if (youtubeUrl == null || !youtubeUrl.trim().contains("v=")) {
-            return null;
-        }
         String videoId = null;
-        String[] urlParts = youtubeUrl.split("v=");
-        if (urlParts.length > 1) {
-            videoId = urlParts[1];
-            int ampersandPosition = videoId.indexOf('&');
-            if (ampersandPosition != -1) {
-                videoId = videoId.substring(0, ampersandPosition);
+        if (youtubeUrl != null && youtubeUrl.trim().length() > 0) {
+            String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+            java.util.regex.Pattern compiledPattern = java.util.regex.Pattern.compile(pattern);
+            java.util.regex.Matcher matcher = compiledPattern.matcher(youtubeUrl);
+            if (matcher.find()) {
+                videoId = matcher.group();
             }
         }
         return videoId;

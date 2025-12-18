@@ -2,6 +2,7 @@ package com.yourname.cinemate.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -290,14 +291,13 @@ public class DetailFragment extends Fragment implements CommentAdapter.CommentIn
 
     private String getYouTubeVideoId(String youtubeUrl) {
         String videoId = null;
-        if (youtubeUrl != null && youtubeUrl.trim().length() > 0 && youtubeUrl.startsWith("http")) {
-            String[] urlParts = youtubeUrl.split("v=");
-            if (urlParts.length > 1) {
-                videoId = urlParts[1];
-                int ampersandPosition = videoId.indexOf('&');
-                if (ampersandPosition != -1) {
-                    videoId = videoId.substring(0, ampersandPosition);
-                }
+        if (youtubeUrl != null && youtubeUrl.trim().length() > 0) {
+            // Xử lý các dạng link YouTube khác nhau
+            String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+            java.util.regex.Pattern compiledPattern = java.util.regex.Pattern.compile(pattern);
+            java.util.regex.Matcher matcher = compiledPattern.matcher(youtubeUrl);
+            if (matcher.find()) {
+                videoId = matcher.group();
             }
         }
         return videoId;
@@ -336,13 +336,32 @@ public class DetailFragment extends Fragment implements CommentAdapter.CommentIn
         }
 
         final String trailerUrl = movie.getTrailerUrl();
-        final String videoId = getYouTubeVideoId(trailerUrl);
-        if (videoId != null && !videoId.isEmpty()) {
+        if (trailerUrl != null && !trailerUrl.isEmpty()) {
             playTrailerButton.setVisibility(View.VISIBLE);
+
             playTrailerButton.setOnClickListener(v -> {
-                Intent intent = new Intent(requireContext(), PlayerActivity.class);
-                intent.putExtra(PlayerActivity.EXTRA_VIDEO_ID, videoId);
-                startActivity(intent);
+                // Lấy Video ID từ URL (để tạo link chuẩn cho app YouTube)
+                String videoId = getYouTubeVideoId(trailerUrl);
+
+                if (videoId != null) {
+                    // Tạo Intent để mở app YouTube
+                    Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoId));
+
+                    // Tạo Intent dự phòng để mở trình duyệt (nếu máy không có app YouTube)
+                    Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + videoId));
+
+                    try {
+                        // Thử mở bằng app YouTube trước
+                        startActivity(appIntent);
+                    } catch (Exception ex) {
+                        // Nếu lỗi (không có app), mở bằng trình duyệt
+                        startActivity(webIntent);
+                    }
+                } else {
+                    // Trường hợp link trailer không phải dạng chuẩn YouTube, mở trực tiếp link đó bằng trình duyệt
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(trailerUrl));
+                    startActivity(browserIntent);
+                }
             });
         } else {
             playTrailerButton.setVisibility(View.GONE);
