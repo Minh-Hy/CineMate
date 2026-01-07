@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.yourname.cinemate.data.model.Comment;
 import com.yourname.cinemate.data.model.Movie;
+import com.yourname.cinemate.data.model.ShareLinks;
 import com.yourname.cinemate.data.repository.MovieRepository;
 import com.yourname.cinemate.utils.Event;
 
@@ -52,6 +53,9 @@ public class DetailViewModel extends ViewModel {
     public DetailViewModel() {
         this.movieRepository = new MovieRepository();
     }
+    // LiveData dùng Event để kích hoạt việc chia sẻ
+    private final MutableLiveData<Event<ShareLinks>> _shareEvent = new MutableLiveData<>();
+    public LiveData<Event<ShareLinks>> getShareEvent() { return _shareEvent; }
 
     /**
      * Phương thức chính để bắt đầu tải TẤT CẢ dữ liệu cho màn hình chi tiết.
@@ -157,5 +161,19 @@ public class DetailViewModel extends ViewModel {
     }
     public void trackMovieView(int movieId) {
         movieRepository.trackMovieView(movieId);
+    }
+    // Hàm được gọi khi người dùng nhấn nút Share
+    public void shareMovie(int movieId) {
+        _isLoading.setValue(true); // Tận dụng loading bar có sẵn
+
+        movieRepository.getShareLinks(movieId).observeForever(shareLinks -> {
+            _isLoading.setValue(false);
+            if (shareLinks != null) {
+                // Gửi dữ liệu qua Event
+                _shareEvent.setValue(new Event<>(shareLinks));
+            } else {
+                _toastMessage.setValue(new Event<>("Không thể lấy liên kết chia sẻ."));
+            }
+        });
     }
 }

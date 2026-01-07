@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="end"
@@ -11,51 +11,44 @@
     android:paddingEnd="8dp"
     android:paddingBottom="4dp">
 
-    <!-- Bong bóng chat (bên phải) -->
-    <LinearLayout
+    <!-- 1. RecyclerView chứa ảnh/file đính kèm -->
+    <!-- Hiển thị danh sách file trước nội dung text -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_attachments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_chat_attachment"
+        tools:visibility="visible" />
+
+    <!-- 2. Nội dung tin nhắn văn bản -->
+    <TextView
+        android:id="@+id/text_message_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_chat_sent"
-        android:orientation="vertical"
-        android:padding="12dp">
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        tools:text="Đây là tin nhắn do người dùng gửi đi." />
 
-        <!-- Nội dung tin nhắn -->
-        <TextView
-            android:id="@+id/text_message_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            tools:text="Tin nhắn gửi đi" />
+    <!-- (Tùy chọn) Hiển thị giờ gửi -->
+    <TextView
+        android:id="@+id/text_message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:alpha="0.7"
+        android:textColor="@color/netflix_gray_light"
+        android:textSize="10sp"
+        android:visibility="gone"
+        tools:text="10:30 PM"
+        tools:visibility="visible" />
 
-        <!-- *** VIEW MỚI: Hiển thị Ảnh đính kèm *** -->
-        <ImageView
-            android:id="@+id/image_attachment"
-            android:layout_width="200dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="centerCrop"
-            android:visibility="gone"
-            tools:visibility="visible"
-            tools:src="@tools:sample/backgrounds/scenic"/>
-
-        <!-- *** VIEW MỚI: Hiển thị File đính kèm *** -->
-        <TextView
-            android:id="@+id/text_file_attachment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:drawablePadding="8dp"
-            android:ellipsize="middle"
-            android:maxWidth="200dp"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:textStyle="italic"
-            android:visibility="gone"
-            app:drawableStartCompat="@android:drawable/ic_menu_save"
-            app:drawableTint="@color/white"
-            tools:text="bai_tap.pdf"
-            tools:visibility="visible" />
-
-    </LinearLayout>
 </LinearLayout>

@@ -11,6 +11,7 @@ import com.yourname.cinemate.data.model.CreateRatingDto;
 import com.yourname.cinemate.data.model.Movie;
 import com.yourname.cinemate.data.model.PaginatedComments;
 import com.yourname.cinemate.data.model.Rating;
+import com.yourname.cinemate.data.model.ShareLinks;
 import com.yourname.cinemate.data.remote.ApiService;
 import com.yourname.cinemate.data.remote.RetrofitClient;
 import java.util.List;
@@ -295,5 +296,26 @@ public class MovieRepository {
                 Log.e("MovieRepository", "API call failed for trackMovieView", t);
             }
         });
+    }
+    public LiveData<ShareLinks> getShareLinks(int movieId) {
+        final MutableLiveData<ShareLinks> data = new MutableLiveData<>();
+
+        apiService.getShareLinks(movieId).enqueue(new Callback<ShareLinks>() {
+            @Override
+            public void onResponse(Call<ShareLinks> call, Response<ShareLinks> response) {
+                if (response.isSuccessful()) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ShareLinks> call, Throwable t) {
+                Log.e("MovieRepository", "API call failed for getShareLinks", t);
+                data.setValue(null);
+            }
+        });
+        return data;
     }
 }

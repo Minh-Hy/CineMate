@@ -38,6 +38,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.yourname.cinemate.R;
 import com.yourname.cinemate.data.model.Comment;
 import com.yourname.cinemate.data.model.Movie;
+import com.yourname.cinemate.data.model.ShareLinks;
 import com.yourname.cinemate.utils.Constants;
 import com.yourname.cinemate.viewmodel.DetailViewModel;
 import java.util.stream.Collectors;
@@ -65,6 +66,7 @@ public class DetailFragment extends Fragment implements CommentAdapter.CommentIn
     private Handler trackingHandler;
     private Runnable trackingRunnable;
     private static final long TRACKING_DELAY_MS = 30000; // 30 giây
+    private TextView shareButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,6 +109,7 @@ public class DetailFragment extends Fragment implements CommentAdapter.CommentIn
         progressBar = view.findViewById(R.id.progress_bar_detail);
         watchlistButton = view.findViewById(R.id.button_add_watchlist);
         rateButton = view.findViewById(R.id.button_rate);
+        shareButton = view.findViewById(R.id.button_share);
         playTrailerButton = view.findViewById(R.id.button_play_trailer);
         commentsRecyclerView = view.findViewById(R.id.recycler_comments);
         commentEditText = view.findViewById(R.id.edit_text_comment);
@@ -150,6 +153,11 @@ public class DetailFragment extends Fragment implements CommentAdapter.CommentIn
             showRatingDialog(currentRating != null ? currentRating : 0);
         });
 
+        shareButton.setOnClickListener(v -> {
+            viewModel.shareMovie(movieId);
+        });
+
+
         sendCommentButton.setOnClickListener(v -> {
             String content = commentEditText.getText().toString().trim();
             if (!content.isEmpty()) {
@@ -169,7 +177,12 @@ public class DetailFragment extends Fragment implements CommentAdapter.CommentIn
         viewModel.getMovieDetails().observe(getViewLifecycleOwner(), this::populateUi);
         viewModel.isMovieInWatchlist().observe(getViewLifecycleOwner(), this::updateWatchlistButton);
         viewModel.getUserRating().observe(getViewLifecycleOwner(), this::updateRateButton);
-
+        viewModel.getShareEvent().observe(getViewLifecycleOwner(), event -> {
+            ShareLinks links = event.getContentIfNotHandled();
+            if (links != null) {
+                shareContent(links);
+            }
+        });
         viewModel.getToastMessage().observe(getViewLifecycleOwner(), event -> {
             String message = event.getContentIfNotHandled();
             if (message != null) {
@@ -287,6 +300,25 @@ public class DetailFragment extends Fragment implements CommentAdapter.CommentIn
             }
         });
         dialog.show();
+    }
+    private void shareContent(ShareLinks links) {
+        // Ưu tiên dùng tweetText vì nó đã được format đẹp từ backend
+        String contentToShare = links.getTweetText();
+
+        // Nếu tweetText rỗng (hiếm khi), dùng movieUrl
+        if (contentToShare == null || contentToShare.isEmpty()) {
+            contentToShare = "Check out this movie: " + links.getMovieUrl();
+        }
+
+        // Tạo Intent chia sẻ
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, contentToShare);
+        sendIntent.setType("text/plain");
+
+        // Mở hộp thoại chia sẻ của hệ thống
+        Intent shareIntent = Intent.createChooser(sendIntent, "Chia sẻ phim qua:");
+        startActivity(shareIntent);
     }
 
     private String getYouTubeVideoId(String youtubeUrl) {

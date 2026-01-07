@@ -19,6 +19,7 @@ import com.yourname.cinemate.data.model.RefreshTokenDto;
 import com.yourname.cinemate.data.model.RegisterDto;
 import com.yourname.cinemate.data.model.RegisterResponse;
 import com.yourname.cinemate.data.model.ResetPasswordDto;
+import com.yourname.cinemate.data.model.ShareLinks;
 import com.yourname.cinemate.data.model.UpdateUserDto;
 import com.yourname.cinemate.data.model.User;
 
@@ -132,4 +133,6 @@ public interface ApiService {
     @Multipart
     @POST("chat/upload")
     Call<Attachment> uploadChatFile(@Part MultipartBody.Part file);
+    @GET("movies/{id}/share")
+    Call<ShareLinks> getShareLinks(@Path("id") int movieId);
 }
