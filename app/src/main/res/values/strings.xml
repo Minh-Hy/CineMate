@@ -4,4 +4,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="server_client_id">591768759015-g5t6bd2rbjlagbkjamsk9sv895mup5la.apps.googleusercontent.com</string>
     <string name="more_options">Xem thêm</string>
+    <string name="default_notification_channel_id"></string>
 </resources>

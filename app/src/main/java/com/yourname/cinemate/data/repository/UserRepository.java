@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.yourname.cinemate.MyApplication;
 import com.yourname.cinemate.data.model.ChangePasswordDto;
+import com.yourname.cinemate.data.model.DeviceTokenDto;
 import com.yourname.cinemate.data.model.UpdateUserDto;
 import com.yourname.cinemate.data.model.User;
 import com.yourname.cinemate.data.remote.ApiService;
@@ -143,5 +144,17 @@ public class UserRepository {
             }
         });
         return success;
+    }
+    public void registerDeviceToken(String token) {
+        apiService.registerDeviceToken(new DeviceTokenDto(token)).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) Log.d("UserRepository", "Device token registered");
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("UserRepository", "Failed to register device token", t);
+            }
+        });
     }
 }

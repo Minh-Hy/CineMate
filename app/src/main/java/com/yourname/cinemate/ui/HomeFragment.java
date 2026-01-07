@@ -204,7 +204,7 @@ public class HomeFragment extends Fragment implements MovieBannerAdapter.OnMovie
         inflater.inflate(R.menu.home_menu, menu);
     }
 
-    // --- PHƯƠNG THỨC XỬ LÝ CLICK (Đã có sẵn trong code của bạn, không cần sửa) ---
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
@@ -216,7 +216,10 @@ public class HomeFragment extends Fragment implements MovieBannerAdapter.OnMovie
             // Điều hướng sang ProfileFragment
             Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_profileFragment);
             return true;
-        }
+        } else if (itemId == R.id.action_notifications) {
+        Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_notificationFragment);
+        return true;
+    }
         return super.onOptionsItemSelected(item);
     }
 }

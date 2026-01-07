@@ -78,6 +78,14 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_homeFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
     </fragment>
 
     <!-- Định nghĩa màn hình Chi tiết (Detail) -->
@@ -200,4 +208,14 @@
         android:name="com.yourname.cinemate.ui.ChatFragment"
         android:label="ChatFragment"
         tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.yourname.cinemate.ui.NotificationFragment"
+        android:label="NotificationFragment"
+        tools:layout="@layout/fragment_notification">
+    <action
+        android:id="@+id/action_notificationFragment_to_detailFragment"
+        app:destination="@id/detailFragment" />
+    </fragment>
+
 </navigation>

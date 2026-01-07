@@ -1,17 +1,21 @@
 package com.yourname.cinemate.data.remote;
 
 // import các model bạn sẽ tạo ở bước sau
+import com.google.gson.JsonObject;
 import com.yourname.cinemate.data.model.Attachment;
 import com.yourname.cinemate.data.model.ChangePasswordDto;
 import com.yourname.cinemate.data.model.Comment;
 import com.yourname.cinemate.data.model.ConversationResponse;
 import com.yourname.cinemate.data.model.CreateCommentDto;
 import com.yourname.cinemate.data.model.CreateRatingDto;
+import com.yourname.cinemate.data.model.DeviceTokenDto;
 import com.yourname.cinemate.data.model.ForgotPasswordDto;
 import com.yourname.cinemate.data.model.GoogleTokenDto;
 import com.yourname.cinemate.data.model.LoginDto;
 import com.yourname.cinemate.data.model.LoginResponse;
+import com.yourname.cinemate.data.model.MarkReadDto;
 import com.yourname.cinemate.data.model.Movie;
+import com.yourname.cinemate.data.model.NotificationResponse;
 import com.yourname.cinemate.data.model.PaginatedComments;
 import com.yourname.cinemate.data.model.PaginatedMovies;
 import com.yourname.cinemate.data.model.Rating;
@@ -135,4 +139,26 @@ public interface ApiService {
     Call<Attachment> uploadChatFile(@Part MultipartBody.Part file);
     @GET("movies/{id}/share")
     Call<ShareLinks> getShareLinks(@Path("id") int movieId);
+    // 1. Đăng ký Device Token
+    @POST("devices/register")
+    Call<Void> registerDeviceToken(@Body DeviceTokenDto tokenDto);
+
+    // 2. Lấy danh sách thông báo
+    @GET("notifications")
+    Call<NotificationResponse> getNotifications(
+            @Query("page") int page,
+            @Query("limit") int limit
+    );
+
+    // 3. Đánh dấu 1 thông báo đã đọc
+    @PATCH("notifications/{id}/read")
+    Call<Void> markNotificationRead(@Path("id") String notificationId);
+
+    // 4. Đánh dấu nhiều thông báo đã đọc
+    @POST("notifications/mark-read")
+    Call<Void> markNotificationsRead(@Body MarkReadDto ids);
+
+    // 5. Đếm số thông báo chưa đọc
+    @GET("notifications/count")
+    Call<JsonObject> getUnreadCount();
 }
