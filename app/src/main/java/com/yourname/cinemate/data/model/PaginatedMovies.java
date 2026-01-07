@@ -3,7 +3,7 @@ package com.yourname.cinemate.data.model;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 public class PaginatedMovies {
-    @SerializedName("data") private List<Movie> data;
+    @SerializedName("items") private List<Movie> data;
     @SerializedName("pagination") private PaginationInfo pagination;
     // Getters
     public List<Movie> getData() {

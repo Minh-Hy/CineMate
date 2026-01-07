@@ -7,45 +7,40 @@
     android:background="@color/netflix_black"
     tools:context=".ui.HomeFragment">
 
-    <!-- **** THÊM TOOLBAR VÀO ĐÂY **** -->
+    <!-- 1. Toolbar: Thanh công cụ ở trên cùng -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_home"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/netflix_black"
+        app:title="CineMate"
+        app:titleTextColor="@color/netflix_red"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:titleTextColor="@color/netflix_red" />
-    <!-- Bạn có thể set app:title="CineMate" ở đây hoặc trong code Java -->
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- **** SỬA LẠI CONSTRAINT CỦA RECYCLERVIEW **** -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_category_parent"
+    <!-- 2. SwipeRefreshLayout: Bao bọc RecyclerView để cho phép vuốt xuống tải lại -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_home"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_home" />
-    <!-- app:layout_constraintTop_toTopOf="parent" đã được đổi thành
-         app:layout_constraintTop_toBottomOf="@id/toolbar_home"
-         để nó nằm dưới Toolbar -->
-
-    <!-- ProgressBar giữ nguyên, nhưng constraint của nó cũng cần được cập nhật
-         để không bị Toolbar che khuất -->
-    <ProgressBar
-        android:id="@+id/progress_bar_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_home"
-        tools:visibility="visible" />
-    <!-- Khu vực hiển thị lỗi -->
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- RecyclerView chính: Chứa Banner (item 0) và các Hàng phim (item 1, 2...) -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_category_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!-- 3. Layout Lỗi: Hiển thị khi không tải được dữ liệu -->
     <LinearLayout
         android:id="@+id/layout_error_home"
         android:layout_width="wrap_content"
@@ -53,6 +48,7 @@
         android:orientation="vertical"
         android:gravity="center"
         android:visibility="gone"
+        android:padding="24dp"
         app:layout_constraintTop_toBottomOf="@id/toolbar_home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,14 +61,27 @@
             android:layout_height="wrap_content"
             android:text="Không thể tải dữ liệu. Vui lòng kiểm tra kết nối mạng."
             android:textColor="@color/netflix_gray_light"
-            android:gravity="center"/>
-
+            android:gravity="center"
+            android:textSize="16sp"/>
         <Button
             android:id="@+id/button_retry_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Thử lại"/>
+            android:text="Thử lại"
+            app:backgroundTint="@color/netflix_red"/>
     </LinearLayout>
+
+    <!-- 4. ProgressBar: Hiển thị khi đang tải lần đầu -->
+    <ProgressBar
+        android:id="@+id/progress_bar_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

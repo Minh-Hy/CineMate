@@ -180,7 +180,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="Viết bình luận..."
-                    android:maxLines="3" />
+                    android:maxLines="3"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"/>
 
                 <ImageButton
                     android:id="@+id/button_send_comment"

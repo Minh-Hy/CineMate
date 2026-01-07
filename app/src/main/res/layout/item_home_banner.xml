@@ -3,20 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="400dp">
+    android:layout_height="400dp"> <!-- Chiều cao cố định cho Banner -->
 
-    <!-- Ảnh backdrop làm nền -->
+    <!-- SỬA: Dùng match_parent để đảm bảo lấp đầy khung 400dp -->
     <ImageView
         android:id="@+id/image_banner_backdrop"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
+        android:contentDescription="Banner Image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Lớp phủ màu gradient đen từ dưới lên để chữ dễ đọc hơn -->
+    <!-- Lớp phủ màu gradient -->
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -32,21 +33,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:textColor="@color/white"
         android:textSize="28sp"
         android:textStyle="bold"
+        android:maxLines="2"
+        android:ellipsize="end"
         app:layout_constraintBottom_toTopOf="@+id/button_banner_play"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Tên Phim Nổi Bật Siêu Dài" />
+        tools:text="Tên Phim Nổi Bật" />
 
     <Button
         android:id="@+id/button_banner_play"
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="24dp"
         android:backgroundTint="@color/white"
         android:text="Phát"
         android:textColor="@color/black"
@@ -54,21 +57,24 @@
         app:iconTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_banner_info"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginStart="16dp"/>
 
     <Button
         android:id="@+id/button_banner_info"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:text="Thông tin"
         android:textColor="@color/white"
         app:icon="@android:drawable/ic_menu_info_details"
         app:iconTint="@color/white"
+        app:strokeColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/button_banner_play"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button_banner_play"
-        app:strokeColor="@color/white" />
+        app:layout_constraintTop_toTopOf="@+id/button_banner_play" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

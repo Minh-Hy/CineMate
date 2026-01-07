@@ -22,6 +22,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.yourname.cinemate.R;
 import com.yourname.cinemate.data.model.Movie;
 import com.yourname.cinemate.viewmodel.HomeViewModel;
@@ -34,6 +36,7 @@ public class HomeFragment extends Fragment implements MovieBannerAdapter.OnMovie
     private ProgressBar progressBar;
     private LinearLayout errorLayout;
     private Button retryButton;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
 
@@ -58,19 +61,32 @@ public class HomeFragment extends Fragment implements MovieBannerAdapter.OnMovie
         progressBar = view.findViewById(R.id.progress_bar_home);
         errorLayout = view.findViewById(R.id.layout_error_home);
         retryButton = view.findViewById(R.id.button_retry_home);
-
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_home);
         retryButton.setOnClickListener(v -> viewModel.retryFetch());
 
         // Thiết lập Toolbar
         setupToolbar(view);
 
         setupRecyclerView();
+        setupSwipeRefresh();
+        retryButton.setOnClickListener(v-> viewModel.retryFetch());
         observeViewModel();
+
+
+    }
+    private void setupSwipeRefresh() {
+        // Đặt màu cho vòng xoay (màu đỏ Netflix) để đẹp hơn
+        swipeRefreshLayout.setColorSchemeResources(R.color.netflix_red);
+
+        // Bắt sự kiện khi người dùng kéo xuống
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            // Gọi hàm trong ViewModel để tải lại toàn bộ dữ liệu
+            viewModel.retryFetch();
+        });
     }
 
     private void setupToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar_home);
-        // Đặt Toolbar này làm ActionBar cho Activity
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
     }
 
@@ -80,25 +96,50 @@ public class HomeFragment extends Fragment implements MovieBannerAdapter.OnMovie
     }
 
     private void observeViewModel() {
+        // Quan sát trạng thái Loading
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
-            progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        });
-        viewModel.getError().observe(getViewLifecycleOwner(), event -> {
-            String message = event.getContentIfNotHandled();
-            if (message != null) {
-                parentRecyclerView.setVisibility(View.GONE);
-                errorLayout.setVisibility(View.VISIBLE);
-                // có thể set text cho TextView lỗi ở đây
+            if (isLoading) {
+                // Nếu đang tải và KHÔNG PHẢI do đang vuốt (ví dụ lần đầu mở app)
+                // thì hiện ProgressBar giữa màn hình.
+                // Nếu đang vuốt (isRefreshing = true) thì vòng xoay của SwipeLayout đã hiện rồi.
+                if (!swipeRefreshLayout.isRefreshing()) {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+                errorLayout.setVisibility(View.GONE);
+            } else {
+                // Tải xong: Ẩn tất cả các biểu tượng loading
+                progressBar.setVisibility(View.GONE);
+                swipeRefreshLayout.setRefreshing(false); // QUAN TRỌNG: Tắt vòng xoay
             }
         });
+
+        viewModel.getError().observe(getViewLifecycleOwner(), event -> {
+            String error = event.getContentIfNotHandled();
+            if (error != null) {
+                // Nếu đang vuốt mà lỗi thì tắt vòng xoay đi
+                swipeRefreshLayout.setRefreshing(false);
+                progressBar.setVisibility(View.GONE);
+
+                // Nếu danh sách đang trống thì hiện màn hình lỗi
+                if (categoryAdapter.getItemCount() == 0) {
+                    errorLayout.setVisibility(View.VISIBLE);
+                    parentRecyclerView.setVisibility(View.GONE);
+                } else {
+                    // Nếu đã có phim rồi mà load lại bị lỗi thì chỉ hiện Toast
+                    Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         viewModel.getMovieCategories().observe(getViewLifecycleOwner(), categories -> {
             if (categories != null && !categories.isEmpty()) {
-                errorLayout.setVisibility(View.GONE); // Ẩn lỗi nếu có dữ liệu
                 parentRecyclerView.setVisibility(View.VISIBLE);
+                errorLayout.setVisibility(View.GONE);
                 categoryAdapter.setCategories(categories);
             }
         });
     }
+
 
     @Override
     public void onMovieInfoClick(Movie movie) {

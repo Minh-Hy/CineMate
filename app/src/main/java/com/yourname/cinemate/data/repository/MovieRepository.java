@@ -10,10 +10,13 @@ import com.yourname.cinemate.data.model.CreateCommentDto;
 import com.yourname.cinemate.data.model.CreateRatingDto;
 import com.yourname.cinemate.data.model.Movie;
 import com.yourname.cinemate.data.model.PaginatedComments;
+import com.yourname.cinemate.data.model.PaginatedMovies;
 import com.yourname.cinemate.data.model.Rating;
 import com.yourname.cinemate.data.model.ShareLinks;
 import com.yourname.cinemate.data.remote.ApiService;
 import com.yourname.cinemate.data.remote.RetrofitClient;
+
+import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -262,18 +265,22 @@ public class MovieRepository {
     public LiveData<List<Movie>> searchMovies(String query) {
         final MutableLiveData<List<Movie>> data = new MutableLiveData<>();
 
-        apiService.searchMovies(query).enqueue(new Callback<List<Movie>>() {
+        apiService.searchMovies(query).enqueue(new Callback<PaginatedMovies>() {
             @Override
-            public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
-                if (response.isSuccessful()) {
-                    data.setValue(response.body());
+            public void onResponse(Call<PaginatedMovies> call, Response<PaginatedMovies> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Movie> movies = response.body().getData();
+                    if (movies != null) {
+                        data.setValue(movies);
+                    } else {
+                        data.setValue(new ArrayList<>());                 }
                 } else {
-                    data.setValue(null); // Trả về null khi có lỗi server (4xx, 5xx)
+                    data.setValue(new ArrayList<>());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Movie>> call, Throwable t) {
+            public void onFailure(Call<PaginatedMovies> call, Throwable t) {
                 Log.e("MovieRepository", "API call failed for searchMovies", t);
                 data.setValue(null); // Trả về null khi có lỗi mạng
             }

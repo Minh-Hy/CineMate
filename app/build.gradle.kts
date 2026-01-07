@@ -79,6 +79,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     // Socket.IO Client
     implementation("io.socket:socket.io-client:2.1.1") {
         // Loại bỏ org.json để tránh xung đột với Android

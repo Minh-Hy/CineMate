@@ -60,7 +60,7 @@ public class MovieCategoryAdapter extends RecyclerView.Adapter<RecyclerView.View
                 // THÊM DÒNG LOG NÀY
                 Log.d("BannerViewHolder", "Loading BANNER image from URL: " + fullBackdropUrl);
 
-                Glide.with(itemView.getContext()).load(fullBackdropUrl).into(backdropImage);
+                Glide.with(itemView.getContext()).load(fullBackdropUrl).override(800, 450).centerCrop().placeholder(R.color.netflix_gray_dark).into(backdropImage);
             } else {
                 Log.w("BannerViewHolder", "Banner movie has NO backdrop path!");
             }

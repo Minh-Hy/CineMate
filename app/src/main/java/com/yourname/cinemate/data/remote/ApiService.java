@@ -103,7 +103,7 @@ public interface ApiService {
     // Hoặc đường dẫn tương ứng mà BE cung cấp
     Call<List<Movie>> getTopRatedMovies();
     @GET("movies/search")
-    Call<List<Movie>> searchMovies(@Query("query") String query);
+    Call<PaginatedMovies> searchMovies(@Query("query") String query);
     @PUT("profile")
     Call<User> updateUserProfile(@Body UpdateUserDto updateUserDto);
     @Multipart
